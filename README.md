@@ -5,7 +5,6 @@ PageNeko is a simple javascript file that immediately adds a cat to your website
 The default character is based on [the Neko desktop pet](<https://en.wikipedia.org/wiki/Neko_(software)>), you can use this default, or easily change the character to your own. Customization is simple, just update a few arrays in **page_neko.js** file.
 
 ## [Click here for a demo.](https://somwhy.github.io/PageNeko/)
-## [Click here for a demo.](https://somwhy.github.io/PageNeko/)
 
 ![Demo gif](https://github.com/user-attachments/assets/2bd2e8eb-8e7c-44f8-a460-d78295184b02)
 ![Demo gif](https://github.com/user-attachments/assets/216808aa-a556-4479-9395-6c1050aab4c6)
