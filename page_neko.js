@@ -147,6 +147,10 @@ let targetY = window.innerHeight / 2;
 let petX = targetX;
 let petY = targetY;
 
+// Track mouse position
+let lastMouseX = 0;
+let lastMouseY = 0;
+
 // Cat movement speed
 const PET_SPEED = 0.8;
 
@@ -291,6 +295,9 @@ class CatStateMachine {
     }
 
     handleMouseMove(e) {
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+        
         if (this.mood === MOOD.CALM || isDragging) return;
         targetX = e.clientX;
         targetY = e.clientY;
@@ -437,8 +444,18 @@ function endDrag() {
 function updateCursor() {
     if (catState.state === STATE.IDLE) {
         document.body.style.cursor = "none";
+    } else if (isDragging) {
+        document.body.style.cursor = "grabbing";
     } else if (catState.state === STATE.SLEEPING) {
-        document.body.style.cursor = isDragging ? "grabbing" : "grab";
+        // Check if mouse is over the cat
+        const isOverCat = (
+            lastMouseX >= petX &&
+            lastMouseX <= petX + PET_WIDTH &&
+            lastMouseY >= petY &&
+            lastMouseY <= petY + PET_HEIGHT
+        );
+        
+        document.body.style.cursor = isOverCat ? "grab" : "auto";
     } else {
         document.body.style.cursor = "auto";
     }
