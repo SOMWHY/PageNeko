@@ -98,8 +98,8 @@ const MOOD_CHANGE_MAX = 120000; // Mood change max interval (ms)
 const CATCH_DISTANCE = 5; // Distance to catch mouse
 
 // Cat width and height
-const PET_WIDTH = 64;
-const PET_HEIGHT = 64;
+const PET_WIDTH = 42;
+const PET_HEIGHT = 42;
 
 // Position variables
 let targetX = window.innerWidth / 2;
