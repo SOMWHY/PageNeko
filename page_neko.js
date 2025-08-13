@@ -1,41 +1,91 @@
-// Image preloader with error handling
+// Configuration constant for cache usage
+const USE_CACHE = true; // Set to false to disable caching
+const CACHE_VERSION = "v1"; // Change this to invalidate old caches
+
+// Image preloader with caching and error handling
 const preloadImages = (() => {
     const images = {};
     const promises = [];
     const loadedImages = new Set();
     
-    // Create image loading promises
+    // Create image loading promises with caching
     function createImageLoadPromise(path) {
         return new Promise((resolve) => {
+            const storageKey = `neko_img_${CACHE_VERSION}_${path.replace(/\//g, '_')}`;
             const img = new Image();
-            img.onload = () => {
-                images[path] = img;
-                loadedImages.add(path);
-                resolve();
-            };
-            img.onerror = () => {
-                console.error(`Failed to load image: ${path}`);
-                // Create fallback element for debugging
-                const fallback = document.createElement('div');
-                fallback.style.cssText = `
-                    position: absolute;
-                    width: 42px;
-                    height: 42px;
-                    background-color: #ff6b6b;
-                    color: white;
-                    font-size: 8px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border-radius: 4px;
-                    z-index: 10000;
-                `;
-                fallback.textContent = path.replace('.png', '');
-                document.body.appendChild(fallback);
-                resolve();
-            };
-            img.src = path;
+            
+            // Check if cached version exists
+            if (USE_CACHE && localStorage.getItem(storageKey)) {
+                try {
+                    img.src = localStorage.getItem(storageKey);
+                    img.onload = () => {
+                        images[path] = img;
+                        loadedImages.add(path);
+                        resolve();
+                    };
+                    img.onerror = () => {
+                        console.error(`Cached image failed: ${path}`);
+                        loadFromNetwork();
+                    };
+                    return;
+                } catch (e) {
+                    console.error("Cache load error:", e);
+                }
+            }
+            
+            // Load from network if no cache available
+            loadFromNetwork();
+            
+            function loadFromNetwork() {
+                img.onload = () => {
+                    images[path] = img;
+                    loadedImages.add(path);
+                    
+                    // Cache the loaded image
+                    if (USE_CACHE) {
+                        try {
+                            const canvas = document.createElement('canvas');
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0);
+                            localStorage.setItem(storageKey, canvas.toDataURL('image/png'));
+                        } catch (e) {
+                            console.error("Caching failed:", e);
+                        }
+                    }
+                    resolve();
+                };
+                
+                img.onerror = () => {
+                    console.error(`Failed to load image: ${path}`);
+                    createFallbackElement(path);
+                    resolve();
+                };
+                
+                img.src = path;
+            }
         });
+    }
+
+    // Create visual fallback for debugging
+    function createFallbackElement(path) {
+        const fallback = document.createElement('div');
+        fallback.style.cssText = `
+            position: absolute;
+            width: 42px;
+            height: 42px;
+            background-color: #ff6b6b;
+            color: white;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            z-index: 10000;
+        `;
+        fallback.textContent = path.split('/').pop().replace('.png', '');
+        document.body.appendChild(fallback);
     }
 
     return {
@@ -49,10 +99,17 @@ const preloadImages = (() => {
         },
         get: function(path) {
             return images[path];
+        },
+        // Add method to clear cache if needed
+        clearCache: function() {
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('neko_img_')) {
+                    localStorage.removeItem(key);
+                }
+            });
         }
     };
 })();
-
 // Cat animation image directory
 const str_pageNeko_directory = "images_neko/";
 
