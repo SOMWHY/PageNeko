@@ -18,6 +18,8 @@ The default character is based on [the Neko desktop pet](<https://en.wikipedia.o
 - When the cat bumps into a wall, it will scratch the wall in frustration.(Ah~so cute~)
 - You can drag to place it when it's sleeping.
 - If you click around the sleeping cat, it will get surprised.
+- When the cat is in light sleep, clicking causes a mild reaction
+- When the cat is in deep sleep, clicking causes a strong reaction
 - You will see the "ZZZ" animation when the cat sleeps if you enable it. 
 - You won't see a button for changing it's mood or something else, as I personally consider it's more realistic
 - It's easy to customize.
@@ -45,10 +47,10 @@ That's it! Your page should now have a cute little playable living creature...
 
 # How to customize
 
-- Change the images: You should change the images in images_neko folder, then change the file name in "Cat animation frame arrays"
-- Animation timing and more: See in "Global parameters"
-- Cat size: See in the comment "Cat width and height"(This affects performance)
-- Cat speed: See in the comment "Cat movement speed"
-- Cat styling: See in the comment "Create cat element with styles"
-- Trun on/off "ZZZ" animation when sleeping: Set ENABLE_ZZZ_ANIMATION
-to true/false
+- Change the images: You should change the images in images_neko folder, then change the file name in "Image Configuration"
+- Animation timing and more: See in "Animation Constants"
+- Cat size: See in the comment "Pet Constants"(Size of images affects performance)
+- Cat speed: See in the comment "Pet Constants"
+- Mood changing rate: See in the comment "Pet Constants"
+- Cat styling: See in the comment "Pet Element Styles"
+- Trun on/off "ZZZ" animation when sleeping: Set ENABLE_ZZZ_ANIMATION to true/false

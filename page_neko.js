@@ -14,12 +14,6 @@ const SLEEP_MATURE_TIME = 5000;
 const SURPRISED_FRAME_INTERVAL = 400;
 const SURPRISED_REPEAT = 2;
 const MOUSE_IDLE_DELAY = 500;
-const MOOD_CHANGE_MIN = 60000;
-const MOOD_CHANGE_MAX = 120000;
-const CATCH_DISTANCE = 5;
-const PET_WIDTH = 42;
-const PET_HEIGHT = 42;
-const PET_SPEED = 0.8;
 const DRAG_THRESHOLD = 5;
 const JUMP_INITIAL_HEIGHT = -30;
 const JUMP_GRAVITY = 2;
@@ -36,6 +30,14 @@ const SHAKE_INTENSITY = 10;
 const SLEEP_CLICK_DISTANCE = 50;
 const SLEEP_CLICK_DURATION = 15;
 const FALLBACK_SIZE = 42;
+
+// Pet Constants
+const MOOD_CHANGE_MIN = 60000;
+const MOOD_CHANGE_MAX = 120000;
+const CATCH_DISTANCE = 5;//How far the cat can eat the mouse
+const PET_WIDTH = 42;
+const PET_HEIGHT = 42;
+const PET_SPEED = 0.8;
 
 // Direction Constants
 const DIRECTION = {
@@ -95,6 +97,7 @@ document.body.appendChild(zzzContainer);
 
 const petElement = document.createElement("div");
 petElement.id = "neko";
+// Pet Element Styles
 Object.assign(petElement.style, {
   position: "absolute",
   width: `${PET_WIDTH}px`,
@@ -474,6 +477,8 @@ class CatStateMachine {
       const sleepDuration = this.sleepStartTime ? 
         (Date.now() - this.sleepStartTime) / 1000 : 0;
       
+      //mode1: Light sleep reaction
+      //mode2: Deep sleep reaction
       this.surprisedMode = sleepDuration >= SLEEP_CLICK_DURATION ? 2 : 1;
       this.isSurprised = true;
       this.frame = 0;
