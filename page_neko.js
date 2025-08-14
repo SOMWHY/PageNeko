@@ -8,10 +8,6 @@ const ENABLE_ZZZ_ANIMATION = true;
 // Animation Constants
 const RUN_FRAME_INTERVAL = 150;
 const IDLE_TO_IDLING_DELAY = 1200;
-const IDLING_FRAME_INTERVAL = 500;
-const IDLING_REPEAT = 3;
-const SURPRISED_FRAME_INTERVAL = 400;
-const SURPRISED_REPEAT = 2;
 const MOUSE_IDLE_DELAY = 500;
 const DRAG_THRESHOLD = 5;
 const JUMP_INITIAL_HEIGHT = -30;
@@ -109,8 +105,6 @@ Object.assign(petElement.style, {
   transformOrigin: "center",
   transition: "transform 0.1s ease",
   display: "none",
-  backgroundColor: "#f0f0f0",
-  border: "1px dashed #ccc",
 });
 document.body.appendChild(petElement);
 

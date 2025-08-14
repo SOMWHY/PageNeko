@@ -18,8 +18,8 @@ The default character is based on [the Neko desktop pet](<https://en.wikipedia.o
 - When the cat bumps into a wall, it will scratch the wall in frustration.(Ah~so cute~)
 - You can drag to place it when it's sleeping.
 - If you click around the sleeping cat, it will get surprised.
-- When the cat is in light sleep, clicking causes a mild reaction
-- When the cat is in deep sleep, clicking causes a strong reaction
+- When the cat is in light sleep, clicking causes a "shake" reaction
+- When the cat is in deep sleep, clicking causes a "jump" reaction
 - You will see the "ZZZ" animation when the cat sleeps if you enable it. 
 - You won't see a button for changing it's mood or something else, as I personally consider it's more realistic
 - It's easy to customize.
