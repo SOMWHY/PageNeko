@@ -55,3 +55,6 @@ That's it! Your page should now have a cute little playable living creature...
 - Time needed for deep sleep: Change SLEEP_MATURE_TIME in ms
 - Cat styling: See in the comment "Pet Element Styles"
 - Trun on/off "ZZZ" animation when sleeping: Set ENABLE_ZZZ_ANIMATION to true/false
+
+## Stargazers over time
+[![Stargazers over time](https://starchart.cc/SOMWHY/PageNeko.svg?variant=adaptive)](https://starchart.cc/SOMWHY/PageNeko)
