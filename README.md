@@ -52,5 +52,6 @@ That's it! Your page should now have a cute little playable living creature...
 - Cat size: See in the comment "Pet Constants"(Size of images affects performance)
 - Cat speed: See in the comment "Pet Constants"
 - Mood changing rate: See in the comment "Pet Constants"
+- Time needed for deep sleep: Change SLEEP_MATURE_TIME in ms
 - Cat styling: See in the comment "Pet Element Styles"
 - Trun on/off "ZZZ" animation when sleeping: Set ENABLE_ZZZ_ANIMATION to true/false

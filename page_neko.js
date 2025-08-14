@@ -6,11 +6,10 @@ const CACHE_VERSION = "v1";
 const ENABLE_ZZZ_ANIMATION = true;
 
 // Animation Constants
-const RUN_FRAME_INTERVAL = 280;
+const RUN_FRAME_INTERVAL = 150;
 const IDLE_TO_IDLING_DELAY = 1200;
 const IDLING_FRAME_INTERVAL = 500;
 const IDLING_REPEAT = 3;
-const SLEEP_MATURE_TIME = 5000;
 const SURPRISED_FRAME_INTERVAL = 400;
 const SURPRISED_REPEAT = 2;
 const MOUSE_IDLE_DELAY = 500;
@@ -28,13 +27,13 @@ const ZZZ_TRANSLATE_X = 20;
 const ZZZ_REMOVE_DELAY = 500;
 const SHAKE_INTENSITY = 10;
 const SLEEP_CLICK_DISTANCE = 50;
-const SLEEP_CLICK_DURATION = 15;
+const SLEEP_MATURE_TIME = 15000; //ms
 const FALLBACK_SIZE = 42;
 
 // Pet Constants
 const MOOD_CHANGE_MIN = 60000;
 const MOOD_CHANGE_MAX = 120000;
-const CATCH_DISTANCE = 5;//How far the cat can eat the mouse
+const CATCH_DISTANCE = 5; //How far the cat can eat the mouse
 const PET_WIDTH = 42;
 const PET_HEIGHT = 42;
 const PET_SPEED = 0.8;
@@ -48,7 +47,7 @@ const DIRECTION = {
   UP: 4,
   UP_RIGHT: 5,
   RIGHT: 6,
-  DOWN_RIGHT: 7
+  DOWN_RIGHT: 7,
 };
 
 // State Constants
@@ -56,13 +55,13 @@ const STATE = {
   MOVING: 0,
   IDLE: 1,
   IDLING: 2,
-  SLEEPING: 3
+  SLEEPING: 3,
 };
 
 // Mood Constants
 const MOOD = {
   HAPPY: 0,
-  CALM: 1
+  CALM: 1,
 };
 
 // =====================================
@@ -111,7 +110,7 @@ Object.assign(petElement.style, {
   transition: "transform 0.1s ease",
   display: "none",
   backgroundColor: "#f0f0f0",
-  border: "1px dashed #ccc"
+  border: "1px dashed #ccc",
 });
 document.body.appendChild(petElement);
 
@@ -177,7 +176,7 @@ const preloadImages = (() => {
   }
 
   function createImageLoadPromise(path) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       if (loadedImages.has(path)) {
         resolve();
         return;
@@ -210,21 +209,21 @@ const preloadImages = (() => {
   }
 
   return {
-    load: function(paths) {
-      const newPaths = paths.filter(path => !loadedImages.has(path));
-      const promises = newPaths.map(path => createImageLoadPromise(path));
+    load: function (paths) {
+      const newPaths = paths.filter((path) => !loadedImages.has(path));
+      const promises = newPaths.map((path) => createImageLoadPromise(path));
       return Promise.all(promises);
     },
-    get: function(path) {
+    get: function (path) {
       return images[path];
     },
-    clearCache: function() {
-      Object.keys(localStorage).forEach(key => {
+    clearCache: function () {
+      Object.keys(localStorage).forEach((key) => {
         if (key.startsWith(storagePrefix)) {
           localStorage.removeItem(key);
         }
       });
-    }
+    },
   };
 })();
 
@@ -235,9 +234,10 @@ function createZZZElement() {
   const zzz = document.createElement("div");
   const zCount = 1 + Math.floor(Math.random() * 3);
   zzz.textContent = "z".repeat(zCount);
-  
-  const fontSize = ZZZ_FONT_SIZE_MIN + Math.random() * (ZZZ_FONT_SIZE_MAX - ZZZ_FONT_SIZE_MIN);
-  
+
+  const fontSize =
+    ZZZ_FONT_SIZE_MIN + Math.random() * (ZZZ_FONT_SIZE_MAX - ZZZ_FONT_SIZE_MIN);
+
   zzz.style.cssText = `
     position: absolute;
     color: rgba(150, 150, 150, 0.7);
@@ -250,7 +250,7 @@ function createZZZElement() {
     user-select: none;
     white-space: nowrap;
   `;
-  
+
   return zzz;
 }
 
@@ -261,7 +261,7 @@ function animateZZZ() {
   }
 
   const zzz = createZZZElement();
-  
+
   // Position above the sleeping cat
   const catHeadX = petX + PET_WIDTH / 2;
   const catHeadY = petY + PET_HEIGHT * 0.2;
@@ -287,12 +287,15 @@ function animateZZZ() {
   }, 100);
 
   // Schedule next ZZZ
-  setTimeout(animateZZZ, ZZZ_ANIMATION_DURATION + Math.random() * ZZZ_ANIMATION_VARIANCE);
+  setTimeout(
+    animateZZZ,
+    ZZZ_ANIMATION_DURATION + Math.random() * ZZZ_ANIMATION_VARIANCE
+  );
 }
 
 function removeZZZ() {
   isZZZAnimationActive = false;
-  zzzContainer.textContent = '';
+  zzzContainer.textContent = "";
 }
 
 // =====================================
@@ -317,8 +320,11 @@ const animationFrames = {
   sleeping: ["CUR_SLEEP_FRAME01.png", "CUR_SLEEP_FRAME02.png"],
   scratchDown: ["CUR_SCRATCH_DOWN_FRAME01.png", "CUR_SCRATCH_DOWN_FRAME02.png"],
   scratchLeft: ["CUR_SCRATCH_LEFT_FRAME01.png", "CUR_SCRATCH_LEFT_FRAME02.png"],
-  scratchRight: ["CUR_SCRATCH_RIGHT_FRAME01.png", "CUR_SCRATCH_RIGHT_FRAME02.png"],
-  scratchUp: ["CUR_SCRATCH_UP_FRAME01.png", "CUR_SCRATCH_UP_FRAME02.png"]
+  scratchRight: [
+    "CUR_SCRATCH_RIGHT_FRAME01.png",
+    "CUR_SCRATCH_RIGHT_FRAME02.png",
+  ],
+  scratchUp: ["CUR_SCRATCH_UP_FRAME01.png", "CUR_SCRATCH_UP_FRAME02.png"],
 };
 
 // Direction to animation mapping
@@ -330,13 +336,13 @@ const directionAnimations = {
   [DIRECTION.UP]: animationFrames.up,
   [DIRECTION.UP_RIGHT]: animationFrames.upRight,
   [DIRECTION.RIGHT]: animationFrames.right,
-  [DIRECTION.DOWN_RIGHT]: animationFrames.downRight
+  [DIRECTION.DOWN_RIGHT]: animationFrames.downRight,
 };
 
 // Collect all image paths for preloading
 const allImagePaths = Object.values(animationFrames)
   .flat()
-  .map(img => str_pageNeko_directory + img);
+  .map((img) => str_pageNeko_directory + img);
 
 // =====================================
 // Cat State Machine
@@ -365,10 +371,10 @@ class CatStateMachine {
 
   transition(newState) {
     removeZZZ();
-    
+
     // Clear any existing timers
     this.clearTimers();
-    
+
     this.isSurprised = false;
     this.isJumping = false;
     this.jumpY = 0;
@@ -424,7 +430,7 @@ class CatStateMachine {
   changeMood(newMood) {
     if (this.mood === newMood) return;
     this.mood = newMood;
-    
+
     if (newMood === MOOD.HAPPY) {
       if (this.state === STATE.SLEEPING) {
         this.transition(STATE.IDLING);
@@ -444,7 +450,7 @@ class CatStateMachine {
     lastMouseY = e.clientY;
 
     if (this.mood === MOOD.CALM || isDragging) return;
-    
+
     targetX = e.clientX;
     targetY = e.clientY;
     this.isMouseIdle = false;
@@ -467,19 +473,25 @@ class CatStateMachine {
 
   handleMouseClick(e) {
     if (this.state !== STATE.SLEEPING) return;
-    
+
     const catCenterX = petX + PET_WIDTH / 2;
     const catCenterY = petY + PET_HEIGHT / 2;
-    const distance = calculateDistance(e.clientX, e.clientY, catCenterX, catCenterY);
+    const distance = calculateDistance(
+      e.clientX,
+      e.clientY,
+      catCenterX,
+      catCenterY
+    );
 
     if (distance <= SLEEP_CLICK_DISTANCE) {
       removeZZZ();
-      const sleepDuration = this.sleepStartTime ? 
-        (Date.now() - this.sleepStartTime) / 1000 : 0;
-      
+      const sleepDuration = this.sleepStartTime
+        ? Date.now() - this.sleepStartTime
+        : 0;
+
       //mode1: Light sleep reaction
       //mode2: Deep sleep reaction
-      this.surprisedMode = sleepDuration >= SLEEP_CLICK_DURATION ? 2 : 1;
+      this.surprisedMode = sleepDuration >= SLEEP_MATURE_TIME ? 2 : 1;
       this.isSurprised = true;
       this.frame = 0;
 
@@ -488,7 +500,7 @@ class CatStateMachine {
         this.jumpY = JUMP_INITIAL_HEIGHT;
         this.jumpV = 0;
       }
-      
+
       updatePetAppearance();
       setTimeout(() => {
         this.transition(STATE.IDLE);
@@ -523,10 +535,10 @@ class CatStateMachine {
 
   scheduleMoodChange() {
     if (this.moodTimer) clearTimeout(this.moodTimer);
-    
-    const nextInMs = MOOD_CHANGE_MIN + 
-      Math.random() * (MOOD_CHANGE_MAX - MOOD_CHANGE_MIN);
-    
+
+    const nextInMs =
+      MOOD_CHANGE_MIN + Math.random() * (MOOD_CHANGE_MAX - MOOD_CHANGE_MIN);
+
     this.moodTimer = setTimeout(() => {
       const newMood = Math.random() < 0.5 ? MOOD.HAPPY : MOOD.CALM;
       this.changeMood(newMood);
@@ -543,14 +555,14 @@ const catState = new CatStateMachine();
 // =====================================
 function startDrag(e) {
   if (catState.state !== STATE.SLEEPING) return;
-  
+
   isDragging = true;
   dragStartX = e.clientX;
   dragStartY = e.clientY;
   dragStartPetX = petX;
   dragStartPetY = petY;
   dragStartEvent = e;
-  
+
   document.addEventListener("mousemove", drag);
   document.addEventListener("mouseup", endDrag);
   updateCursor();
@@ -558,7 +570,7 @@ function startDrag(e) {
 
 function drag(e) {
   if (!isDragging) return;
-  
+
   const dx = e.clientX - dragStartX;
   const dy = e.clientY - dragStartY;
 
@@ -572,13 +584,13 @@ function drag(e) {
     targetY = petY;
     updatePetAppearance();
   }
-  
+
   updateCursor();
 }
 
 function endDrag() {
   if (!isDragging) return;
-  
+
   isDragging = false;
   document.removeEventListener("mousemove", drag);
   document.removeEventListener("mouseup", endDrag);
@@ -586,14 +598,14 @@ function endDrag() {
   if (dragStartEvent) {
     const dx = Math.abs(dragStartEvent.clientX - dragStartEvent.clientX);
     const dy = Math.abs(dragStartEvent.clientY - dragStartEvent.clientY);
-    
+
     if (dx <= DRAG_THRESHOLD && dy <= DRAG_THRESHOLD) {
       catState.handleMouseClick(dragStartEvent);
     }
-    
+
     dragStartEvent = null;
   }
-  
+
   updateCursor();
 }
 
@@ -609,7 +621,7 @@ function calculateDistance(x1, y1, x2, y2) {
 function clampToScreen(x, y) {
   return {
     x: Math.max(0, Math.min(window.innerWidth - PET_WIDTH, x)),
-    y: Math.max(0, Math.min(window.innerHeight - PET_HEIGHT, y))
+    y: Math.max(0, Math.min(window.innerHeight - PET_HEIGHT, y)),
   };
 }
 
@@ -618,14 +630,22 @@ function calculateDirection(dx, dy) {
   const degree = angle * (180 / Math.PI);
   const normalizedDegree = (degree + 360) % 360;
 
-  if (normalizedDegree >= 337.5 || normalizedDegree < 22.5) return DIRECTION.RIGHT;
-  if (normalizedDegree >= 22.5 && normalizedDegree < 67.5) return DIRECTION.DOWN_RIGHT;
-  if (normalizedDegree >= 67.5 && normalizedDegree < 112.5) return DIRECTION.DOWN;
-  if (normalizedDegree >= 112.5 && normalizedDegree < 157.5) return DIRECTION.DOWN_LEFT;
-  if (normalizedDegree >= 157.5 && normalizedDegree < 202.5) return DIRECTION.LEFT;
-  if (normalizedDegree >= 202.5 && normalizedDegree < 247.5) return DIRECTION.UP_LEFT;
-  if (normalizedDegree >= 247.5 && normalizedDegree < 292.5) return DIRECTION.UP;
-  if (normalizedDegree >= 292.5 && normalizedDegree < 337.5) return DIRECTION.UP_RIGHT;
+  if (normalizedDegree >= 337.5 || normalizedDegree < 22.5)
+    return DIRECTION.RIGHT;
+  if (normalizedDegree >= 22.5 && normalizedDegree < 67.5)
+    return DIRECTION.DOWN_RIGHT;
+  if (normalizedDegree >= 67.5 && normalizedDegree < 112.5)
+    return DIRECTION.DOWN;
+  if (normalizedDegree >= 112.5 && normalizedDegree < 157.5)
+    return DIRECTION.DOWN_LEFT;
+  if (normalizedDegree >= 157.5 && normalizedDegree < 202.5)
+    return DIRECTION.LEFT;
+  if (normalizedDegree >= 202.5 && normalizedDegree < 247.5)
+    return DIRECTION.UP_LEFT;
+  if (normalizedDegree >= 247.5 && normalizedDegree < 292.5)
+    return DIRECTION.UP;
+  if (normalizedDegree >= 292.5 && normalizedDegree < 337.5)
+    return DIRECTION.UP_RIGHT;
   return DIRECTION.DOWN;
 }
 
@@ -636,10 +656,10 @@ function updateCursor() {
     document.body.style.cursor = "grabbing";
   } else if (catState.state === STATE.SLEEPING) {
     // Check if mouse is over the cat
-    const isOverCat = 
-      lastMouseX >= petX && 
+    const isOverCat =
+      lastMouseX >= petX &&
       lastMouseX <= petX + PET_WIDTH &&
-      lastMouseY >= petY && 
+      lastMouseY >= petY &&
       lastMouseY <= petY + PET_HEIGHT;
 
     document.body.style.cursor = isOverCat ? "grab" : "auto";
@@ -649,20 +669,26 @@ function updateCursor() {
 }
 
 function updatePetAppearance() {
-  let shakeX = 0, shakeY = 0, offsetY = 0;
+  let shakeX = 0,
+    shakeY = 0,
+    offsetY = 0;
   let animation = null;
 
   // Handle scratching animations when hitting screen edges
   if (catState.state === STATE.MOVING) {
     if (petX <= 0 && catState.direction === DIRECTION.LEFT) {
       animation = animationFrames.scratchLeft;
-    } else if (petX >= window.innerWidth - PET_WIDTH && 
-               catState.direction === DIRECTION.RIGHT) {
+    } else if (
+      petX >= window.innerWidth - PET_WIDTH &&
+      catState.direction === DIRECTION.RIGHT
+    ) {
       animation = animationFrames.scratchRight;
     } else if (petY <= 0 && catState.direction === DIRECTION.UP) {
       animation = animationFrames.scratchUp;
-    } else if (petY >= window.innerHeight - PET_HEIGHT && 
-               catState.direction === DIRECTION.DOWN) {
+    } else if (
+      petY >= window.innerHeight - PET_HEIGHT &&
+      catState.direction === DIRECTION.DOWN
+    ) {
       animation = animationFrames.scratchDown;
     }
   }
@@ -679,10 +705,18 @@ function updatePetAppearance() {
       }
     } else {
       switch (catState.state) {
-        case STATE.SLEEPING: animation = animationFrames.sleeping; break;
-        case STATE.IDLING: animation = animationFrames.idling; break;
-        case STATE.IDLE: animation = animationFrames.idle; break;
-        case STATE.MOVING: animation = directionAnimations[catState.direction]; break;
+        case STATE.SLEEPING:
+          animation = animationFrames.sleeping;
+          break;
+        case STATE.IDLING:
+          animation = animationFrames.idling;
+          break;
+        case STATE.IDLE:
+          animation = animationFrames.idle;
+          break;
+        case STATE.MOVING:
+          animation = directionAnimations[catState.direction];
+          break;
       }
     }
   }
@@ -733,9 +767,11 @@ function updatePosition() {
     petY = pos.y;
   }
 
-  if (distance < CATCH_DISTANCE && 
-      catState.isMouseIdle && 
-      catState.state === STATE.MOVING) {
+  if (
+    distance < CATCH_DISTANCE &&
+    catState.isMouseIdle &&
+    catState.state === STATE.MOVING
+  ) {
     catState.transition(STATE.IDLE);
   }
 
@@ -751,20 +787,27 @@ function initAfterPreload() {
   petY = Math.random() * (window.innerHeight - PET_HEIGHT);
   targetX = petX;
   targetY = petY;
-  
+
   // Set initial mood
   catState.mood = Math.random() < 0.5 ? MOOD.HAPPY : MOOD.CALM;
-  catState.transition(catState.mood === MOOD.CALM ? STATE.SLEEPING : STATE.MOVING);
-  
+  catState.transition(
+    catState.mood === MOOD.CALM ? STATE.SLEEPING : STATE.MOVING
+  );
+
   petElement.style.display = "block";
 
   // Event listeners
-  document.addEventListener("mousemove", e => catState.handleMouseMove(e));
-  
-  document.addEventListener("mousedown", e => {
+  document.addEventListener("mousemove", (e) => catState.handleMouseMove(e));
+
+  document.addEventListener("mousedown", (e) => {
     const catCenterX = petX + PET_WIDTH / 2;
     const catCenterY = petY + PET_HEIGHT / 2;
-    const distance = calculateDistance(e.clientX, e.clientY, catCenterX, catCenterY);
+    const distance = calculateDistance(
+      e.clientX,
+      e.clientY,
+      catCenterX,
+      catCenterY
+    );
 
     if (catState.state === STATE.SLEEPING && distance <= SLEEP_CLICK_DISTANCE) {
       startDrag(e);
@@ -778,10 +821,10 @@ function initAfterPreload() {
     () => catState.updateFrame(),
     RUN_FRAME_INTERVAL
   );
-  
+
   // Start position updates
   updatePosition();
-  
+
   // Schedule mood changes
   catState.scheduleMoodChange();
 }
