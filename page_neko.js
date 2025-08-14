@@ -154,10 +154,12 @@ function createZZZElement() {
 
 // Function to animate ZZZ elements
 function animateZZZ() {
-  if (!isZZZAnimationActive || !ENABLE_ZZZ_ANIMATION) return;
-
   const zzz = createZZZElement();
-  zzzContainer.appendChild(zzz);
+
+  if (!isZZZAnimationActive || !ENABLE_ZZZ_ANIMATION){
+    removeZZZ();
+    return;
+  }
 
   // Position above the sleeping cat (adjust for cat head position)
   const catHeadX = petX + PET_WIDTH / 2;
@@ -169,6 +171,7 @@ function animateZZZ() {
   zzz.style.left = `${catHeadX + offsetX}px`;
   zzz.style.top = `${catHeadY + offsetY}px`;
   zzz.style.opacity = "1";
+  zzzContainer.appendChild(zzz);
 
   // Animate upward movement
   setTimeout(() => {
@@ -185,6 +188,11 @@ function animateZZZ() {
 
   // Schedule next ZZZ animation
   setTimeout(animateZZZ, 1000 + Math.random() * 1500);
+}
+
+function removeZZZ() {
+  isZZZAnimationActive = false;
+  zzzContainer.textContent = '';
 }
 
 // Cat animation image directory
@@ -393,6 +401,7 @@ class CatStateMachine {
   }
 
   transition(newState) {
+    removeZZZ()
     if (this.state === STATE.IDLE && this.idleTimer) {
       clearTimeout(this.idleTimer);
       this.idleTimer = null;
@@ -417,11 +426,7 @@ class CatStateMachine {
         animateZZZ();
       }
     } else if (this.state === STATE.SLEEPING && newState !== STATE.SLEEPING) {
-      isZZZAnimationActive = false;
-      // Clear any existing ZZZ elements
-      while (zzzContainer.firstChild) {
-        zzzContainer.removeChild(zzzContainer.firstChild);
-      }
+      removeZZZ()
     }
 
     switch (newState) {
@@ -439,7 +444,7 @@ class CatStateMachine {
       case STATE.SLEEPING:
         this.sleepStartTime = Date.now();
         break;
-      case STATE.MOVING:
+      case STATE.MOVING:    
         this.isMouseIdle = false;
         this.isSurprised = false;
         this.isJumping = false;
@@ -459,7 +464,6 @@ class CatStateMachine {
   changeMood(newMood) {
     if (this.mood === newMood) return;
     this.mood = newMood;
-
     if (newMood === MOOD.HAPPY) {
       if (this.state === STATE.SLEEPING) {
         this.transition(STATE.IDLING);
@@ -520,6 +524,7 @@ class CatStateMachine {
     );
 
     if (distance <= 50) {
+      removeZZZ()
       const sleepDuration = this.sleepStartTime
         ? (Date.now() - this.sleepStartTime) / 1000
         : 0;
@@ -532,7 +537,6 @@ class CatStateMachine {
         this.jumpY = JUMP_INITIAL_HEIGHT;
         this.jumpV = 0;
       }
-
       updatePetAppearance();
       setTimeout(() => {
         this.transition(STATE.IDLE);
