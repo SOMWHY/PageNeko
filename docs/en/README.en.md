@@ -56,5 +56,10 @@ That's it! Your page should now have a cute little playable living creature...
 - Cat styling: See in the comment "Pet Element Styles"
 - Trun on/off "ZZZ" animation when sleeping: Set ENABLE_ZZZ_ANIMATION to true/false
 
+## Contributors
+<a href="https://github.com/SOMWHY/PageNeko/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=SOMWHY/PageNeko" />
+</a>
+
 ## Stargazers over time
 [![Stargazers over time](https://starchart.cc/SOMWHY/PageNeko.svg?variant=adaptive)](https://starchart.cc/SOMWHY/PageNeko)

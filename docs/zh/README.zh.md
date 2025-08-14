@@ -71,5 +71,10 @@ PageNeko 是一个简单的 JavaScript 文件，可以立即为您的网站添�
 - 开关“zzz”动画
 设置 ENABLE_ZZZ_ANIMATION 为 true/false
 
-## Stargazers over time
+## 贡献者
+<a href="https://github.com/SOMWHY/PageNeko/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=SOMWHY/PageNeko" />
+</a>
+
+## Star趋势
 [![Stargazers over time](https://starchart.cc/SOMWHY/PageNeko.svg?variant=adaptive)](https://starchart.cc/SOMWHY/PageNeko)
