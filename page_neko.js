@@ -738,8 +738,11 @@ function updatePetAppearance() {
     petElement.style.border = "1px dashed #ccc";
   }
 
-  petElement.style.left = `${petX + shakeX}px`;
-  petElement.style.top = `${petY + shakeY + offsetY}px`;
+  //  pixel-perfect positioning to prevent blur
+  const left = Math.round(petX + shakeX);
+  const top = Math.round(petY + shakeY + offsetY);
+  petElement.style.left = `${left}px`;
+  petElement.style.top = `${top}px`;
   updateCursor();
 }
 
