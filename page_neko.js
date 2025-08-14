@@ -738,7 +738,7 @@ function updatePetAppearance() {
     petElement.style.border = "1px dashed #ccc";
   }
 
-  //  pixel-perfect positioning to prevent blur
+  //  Update position and shake effect
   const left = Math.round(petX + shakeX);
   const top = Math.round(petY + shakeY + offsetY);
   petElement.style.left = `${left}px`;
