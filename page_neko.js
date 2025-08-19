@@ -5,13 +5,14 @@ const USE_CACHE = true;
 const CACHE_VERSION = "v1";
 const ENABLE_ZZZ_ANIMATION = true;
 
-// Animation Constants
+// Timing Constants
 const TIMING = {
   RUN_FRAME_INTERVAL: 150,
   IDLE_TO_IDLING_DELAY: 1200,
   MOUSE_IDLE_DELAY: 500,
 };
 
+// Physics Constants
 const PHYSICS = {
   DRAG_THRESHOLD: 5,
   JUMP_INITIAL_HEIGHT: -30,
@@ -19,11 +20,13 @@ const PHYSICS = {
   SHAKE_INTENSITY: 10,
 };
 
+// Sleep Constants
 const SLEEP = {
   CLICK_DISTANCE: 50,
   MATURE_TIME: 15000, // ms
 };
 
+// ZZZ Animation Constants
 const ZZZ = {
   FONT_SIZE_MIN: 14,
   FONT_SIZE_MAX: 22,
@@ -36,6 +39,7 @@ const ZZZ = {
   REMOVE_DELAY: 500,
 };
 
+// Fallback Constants
 const FALLBACK = {
   SIZE: 42,
 };
