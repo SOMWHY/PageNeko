@@ -5,26 +5,44 @@ const USE_CACHE = true;
 const CACHE_VERSION = "v1";
 const ENABLE_ZZZ_ANIMATION = true;
 
-// Animation Constants
-const RUN_FRAME_INTERVAL = 150;
-const IDLE_TO_IDLING_DELAY = 1200;
-const MOUSE_IDLE_DELAY = 500;
-const DRAG_THRESHOLD = 5;
-const JUMP_INITIAL_HEIGHT = -30;
-const JUMP_GRAVITY = 2;
-const ZZZ_FONT_SIZE_MIN = 14;
-const ZZZ_FONT_SIZE_MAX = 22;
-const ZZZ_OFFSET_X_RANGE = 20;
-const ZZZ_OFFSET_Y_RANGE = 10;
-const ZZZ_ANIMATION_DURATION = 1000;
-const ZZZ_ANIMATION_VARIANCE = 1500;
-const ZZZ_TRANSLATE_Y = -40;
-const ZZZ_TRANSLATE_X = 20;
-const ZZZ_REMOVE_DELAY = 500;
-const SHAKE_INTENSITY = 10;
-const SLEEP_CLICK_DISTANCE = 50;
-const SLEEP_MATURE_TIME = 15000; //ms
-const FALLBACK_SIZE = 42;
+// Timing Constants
+const TIMING = {
+  RUN_FRAME_INTERVAL: 150,
+  IDLE_TO_IDLING_DELAY: 1200,
+  MOUSE_IDLE_DELAY: 500,
+};
+
+// Physics Constants
+const PHYSICS = {
+  DRAG_THRESHOLD: 5,
+  JUMP_INITIAL_HEIGHT: -30,
+  JUMP_GRAVITY: 2,
+  SHAKE_INTENSITY: 10,
+};
+
+// Sleep Constants
+const SLEEP = {
+  CLICK_DISTANCE: 50,
+  MATURE_TIME: 15000, // ms
+};
+
+// ZZZ Animation Constants
+const ZZZ = {
+  FONT_SIZE_MIN: 14,
+  FONT_SIZE_MAX: 22,
+  OFFSET_X_RANGE: 20,
+  OFFSET_Y_RANGE: 10,
+  ANIMATION_DURATION: 1000,
+  ANIMATION_VARIANCE: 1500,
+  TRANSLATE_Y: -40,
+  TRANSLATE_X: 20,
+  REMOVE_DELAY: 500,
+};
+
+// Fallback Constants
+const FALLBACK = {
+  SIZE: 42,
+};
 
 // Pet Constants
 const MOOD_CHANGE_MIN = 60000;
@@ -120,8 +138,8 @@ const preloadImages = (() => {
     const fallback = document.createElement("div");
     fallback.style.cssText = `
       position: absolute;
-      width: ${FALLBACK_SIZE}px;
-      height: ${FALLBACK_SIZE}px;
+      width: ${FALLBACK.SIZE}px;
+      height: ${FALLBACK.SIZE}px;
       background-color: #ff6b6b;
       color: white;
       font-size: 8px;
@@ -230,7 +248,7 @@ function createZZZElement() {
   zzz.textContent = "z".repeat(zCount);
 
   const fontSize =
-    ZZZ_FONT_SIZE_MIN + Math.random() * (ZZZ_FONT_SIZE_MAX - ZZZ_FONT_SIZE_MIN);
+    ZZZ.FONT_SIZE_MIN + Math.random() * (ZZZ.FONT_SIZE_MAX - ZZZ.FONT_SIZE_MIN);
 
   zzz.style.cssText = `
     position: absolute;
@@ -259,8 +277,8 @@ function animateZZZ() {
   // Position above the sleeping cat
   const catHeadX = petX + PET_WIDTH / 2;
   const catHeadY = petY + PET_HEIGHT * 0.2;
-  const offsetX = (Math.random() - 0.5) * ZZZ_OFFSET_X_RANGE;
-  const offsetY = -Math.random() * ZZZ_OFFSET_Y_RANGE;
+  const offsetX = (Math.random() - 0.5) * ZZZ.OFFSET_X_RANGE;
+  const offsetY = -Math.random() * ZZZ.OFFSET_Y_RANGE;
 
   zzz.style.left = `${catHeadX + offsetX}px`;
   zzz.style.top = `${catHeadY + offsetY}px`;
@@ -270,20 +288,20 @@ function animateZZZ() {
   // Animate upward movement
   setTimeout(() => {
     zzz.style.opacity = "0";
-    zzz.style.transform = `translateY(${ZZZ_TRANSLATE_Y}px) translateX(${ZZZ_TRANSLATE_X}px)`;
+    zzz.style.transform = `translateY(${ZZZ.TRANSLATE_Y}px) translateX(${ZZZ.TRANSLATE_X}px)`;
 
     // Remove element after animation
     setTimeout(() => {
       if (zzz.parentNode === zzzContainer) {
         zzzContainer.removeChild(zzz);
       }
-    }, ZZZ_REMOVE_DELAY);
+    }, ZZZ.REMOVE_DELAY);
   }, 100);
 
   // Schedule next ZZZ
   setTimeout(
     animateZZZ,
-    ZZZ_ANIMATION_DURATION + Math.random() * ZZZ_ANIMATION_VARIANCE
+    ZZZ.ANIMATION_DURATION + Math.random() * ZZZ.ANIMATION_VARIANCE
   );
 }
 
@@ -383,7 +401,7 @@ class CatStateMachine {
       case STATE.IDLE:
         this.idleTimer = setTimeout(() => {
           this.transition(STATE.IDLING);
-        }, IDLE_TO_IDLING_DELAY);
+        }, TIMING.IDLE_TO_IDLING_DELAY);
         break;
       case STATE.IDLING:
         this.idlingCount = 0;
@@ -453,7 +471,7 @@ class CatStateMachine {
     this.clearTimers();
     this.idleTimer = setTimeout(() => {
       this.isMouseIdle = true;
-    }, MOUSE_IDLE_DELAY);
+    }, TIMING.MOUSE_IDLE_DELAY);
 
     // Handle state transitions based on mouse movement
     if (this.state === STATE.SLEEPING) {
@@ -477,7 +495,7 @@ class CatStateMachine {
       catCenterY
     );
 
-    if (distance <= SLEEP_CLICK_DISTANCE) {
+    if (distance <= SLEEP.CLICK_DISTANCE) {
       removeZZZ();
       const sleepDuration = this.sleepStartTime
         ? Date.now() - this.sleepStartTime
@@ -485,13 +503,13 @@ class CatStateMachine {
 
       //mode1: Light sleep reaction
       //mode2: Deep sleep reaction
-      this.surprisedMode = sleepDuration >= SLEEP_MATURE_TIME ? 2 : 1;
+      this.surprisedMode = sleepDuration >= SLEEP.MATURE_TIME ? 2 : 1;
       this.isSurprised = true;
       this.frame = 0;
 
       if (this.surprisedMode === 2) {
         this.isJumping = true;
-        this.jumpY = JUMP_INITIAL_HEIGHT;
+        this.jumpY = PHYSICS.JUMP_INITIAL_HEIGHT;
         this.jumpV = 0;
       }
 
@@ -518,7 +536,7 @@ class CatStateMachine {
     if (this.surprisedMode === 1) {
       this.frame = (this.frame + 1) % 2;
     } else if (this.surprisedMode === 2 && this.isJumping) {
-      this.jumpV += JUMP_GRAVITY;
+      this.jumpV += PHYSICS.JUMP_GRAVITY;
       this.jumpY += this.jumpV;
       if (this.jumpY >= 0) {
         this.jumpY = 0;
@@ -568,7 +586,7 @@ function drag(e) {
   const dx = e.clientX - dragStartX;
   const dy = e.clientY - dragStartY;
 
-  if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
+  if (Math.abs(dx) > PHYSICS.DRAG_THRESHOLD || Math.abs(dy) > PHYSICS.DRAG_THRESHOLD) {
     petX = dragStartPetX + dx;
     petY = dragStartPetY + dy;
     const pos = clampToScreen(petX, petY);
@@ -593,7 +611,7 @@ function endDrag() {
     const dx = Math.abs(dragStartEvent.clientX - dragStartEvent.clientX);
     const dy = Math.abs(dragStartEvent.clientY - dragStartEvent.clientY);
 
-    if (dx <= DRAG_THRESHOLD && dy <= DRAG_THRESHOLD) {
+    if (dx <= PHYSICS.DRAG_THRESHOLD && dy <= PHYSICS.DRAG_THRESHOLD) {
       catState.handleMouseClick(dragStartEvent);
     }
 
@@ -692,8 +710,8 @@ function updatePetAppearance() {
     if (catState.isSurprised) {
       animation = animationFrames.surprised;
       if (catState.surprisedMode === 1) {
-        shakeX = (Math.random() - 0.5) * SHAKE_INTENSITY;
-        shakeY = (Math.random() - 0.5) * SHAKE_INTENSITY;
+        shakeX = (Math.random() - 0.5) * PHYSICS.SHAKE_INTENSITY;
+        shakeY = (Math.random() - 0.5) * PHYSICS.SHAKE_INTENSITY;
       } else if (catState.surprisedMode === 2) {
         offsetY = catState.jumpY;
       }
@@ -806,7 +824,7 @@ function initAfterPreload() {
       catCenterY
     );
 
-    if (catState.state === STATE.SLEEPING && distance <= SLEEP_CLICK_DISTANCE) {
+    if (catState.state === STATE.SLEEPING && distance <= SLEEP.CLICK_DISTANCE) {
       startDrag(e);
     } else {
       catState.handleMouseClick(e);
@@ -816,7 +834,7 @@ function initAfterPreload() {
   // Start animation loop
   catState.frameInterval = setInterval(
     () => catState.updateFrame(),
-    RUN_FRAME_INTERVAL
+    TIMING.RUN_FRAME_INTERVAL
   );
 
   // Start position updates

@@ -48,11 +48,15 @@ That's it! Your page should now have a cute little playable living creature...
 # How to customize
 
 - Change the images: You should change the images in images_neko folder, then change the file name in "Image Configuration"
-- Animation timing and more: See in "Animation Constants"
+- Animation timing: See in the comment "Timing Constants"
+- Physics and movement: See in the comment "Physics Constants"
+- Sleep behavior: See in the comment "Sleep Constants"
+- ZZZ animation effects: See in the comment "ZZZ Animation Constants"
+- Fallback display: See in the comment "Fallback Constants"
 - Cat size: See in the comment "Pet Constants"(Size of images affects performance)
 - Cat speed: See in the comment "Pet Constants"
 - Mood changing rate: See in the comment "Pet Constants"
-- Time needed for deep sleep: Change SLEEP_MATURE_TIME in ms
+- Time needed for deep sleep: Change SLEEP.MATURE_TIME in ms
 - Cat styling: See in the comment "Pet Element Styles"
 - Trun on/off "ZZZ" animation when sleeping: Set ENABLE_ZZZ_ANIMATION to true/false
 
