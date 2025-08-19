@@ -51,7 +51,21 @@ PageNeko 是一个简单的 JavaScript 文件，可以立即为您的网站添�
 2. 在 **page_neko.js** 的"Image Configuration"部分更新文件名
 
 - 动画设置以及更多
-请见"Animation Constants"部分
+
+- 动画时机
+请见"Timing Constants"部分
+
+- 物理和运动
+请见"Physics Constants"部分
+
+- 睡眠行为
+请见"Sleep Constants"部分
+
+- ZZZ动画效果
+请见"ZZZ Animation Constants"部分
+
+- 后备显示
+请见"Fallback Constants"部分
 
 - 猫咪大小
 请见"Pet Constants"部分（图片大小影响会性能）
@@ -63,7 +77,7 @@ PageNeko 是一个简单的 JavaScript 文件，可以立即为您的网站添�
 请见"Pet Constants"部分
 
 - 熟睡所需时间
-调整 SLEEP_MATURE_TIME
+调整 SLEEP.MATURE_TIME
 
 - 猫咪样式定制
 在"Pet Element Styles"部分自定义CSS：
