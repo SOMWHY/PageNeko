@@ -41,7 +41,7 @@ const ZZZ = {
 
 // Fallback Constants
 const FALLBACK = {
-  SIZE: 42,
+  SIZE: 42, //这里定义了一个后备方案中使用的尺寸，当图片加载失败时，将使用这个尺寸来显示一个替代元素。
 };
 
 // Pet Constants
