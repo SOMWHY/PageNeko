@@ -2,13 +2,13 @@
 
 PageNeko is a simple javascript file that immediately adds a cat to your website! (for the desktop)
 
-The default character is based on [the Neko desktop pet](<https://en.wikipedia.org/wiki/Neko_(software)>), you can use this default, or easily change the character to your own. Customization is simple, just update a few arrays in **page_neko.js** file.
+The default character is based on [the Neko desktop pet](<https://en.wikipedia.org/wiki/Neko_(software)>), you can use this default, or easily change the character to your own.
 
-## [Click here for a demo.](https://somwhy.github.io/PageNeko/)
+## `https://somwhy.github.io/PageNeko/` 
 
-![Demo gif](https://github.com/user-attachments/assets/2bd2e8eb-8e7c-44f8-a460-d78295184b02)
-![Demo gif](https://github.com/user-attachments/assets/216808aa-a556-4479-9395-6c1050aab4c6)
-![Demo gif](https://github.com/user-attachments/assets/7af02366-56f8-4620-84c4-9582cd2d3a6a)
+! `https://github.com/user-attachments/assets/2bd2e8eb-8e7c-44f8-a460-d78295184b02` 
+! `https://github.com/user-attachments/assets/216808aa-a556-4479-9395-6c1050aab4c6` 
+! `https://github.com/user-attachments/assets/7af02366-56f8-4620-84c4-9582cd2d3a6a` 
 
 ## Features include...
 
@@ -26,7 +26,8 @@ The default character is based on [the Neko desktop pet](<https://en.wikipedia.o
 
 ## Getting Page Neko on your page is easy! Just do the following...
 
-Place **page_neko.js** and the **images_neko** folder in the same directory as the page that you would like to run it on.
+Place **page_neko.js** and the **nekos.webp** sprite sheet in the same directory as the page that you would like to run it on.
+
 Then include the javascript file as same as the following template
 
 ```
@@ -47,18 +48,49 @@ That's it! Your page should now have a cute little playable living creature...
 
 # How to customize
 
-- Change the images: You should change the images in images_neko folder, then change the file name in "Image Configuration"
-- Animation timing: See in the comment "Timing Constants"
-- Physics and movement: See in the comment "Physics Constants"
-- Sleep behavior: See in the comment "Sleep Constants"
-- ZZZ animation effects: See in the comment "ZZZ Animation Constants"
-- Fallback display: See in the comment "Fallback Constants"
-- Cat size: See in the comment "Pet Constants"(Size of images affects performance)
-- Cat speed: See in the comment "Pet Constants"
-- Mood changing rate: See in the comment "Pet Constants"
-- Time needed for deep sleep: Change SLEEP.MATURE_TIME in ms
-- Cat styling: See in the comment "Pet Element Styles"
-- Trun on/off "ZZZ" animation when sleeping: Set ENABLE_ZZZ_ANIMATION to true/false
+## Sprite Sheet Customization
+- **Change the images**: Instead of individual images, PageNeko now uses a single sprite sheet (`nekos.webp`). To customize the cat, you need to create your own sprite sheet with the same dimensions and frame order.
+- **Sprite sheet structure**: The sprite sheet should be 34 columns × 1 row, with each frame being 42×42 pixels. The frames must follow the exact order specified in the `framePositions` object in the code.
+- **Sprite sheet path**: You can change the path to your sprite sheet in the `SPRITE_CONFIG` section of `page_neko.js`:
+  ```javascript
+  const SPRITE_CONFIG = {
+    frameWidth: 42,
+    frameHeight: 42,
+    columns: 34,
+    rows: 1,
+    spritePath: "/nekos.webp", // Change this path to your sprite sheet
+  }
+  ```
+
+## Animation timing
+- See in the comment "Timing Constants"
+
+## Physics and movement
+- See in the comment "Physics Constants"
+
+## Sleep behavior
+- See in the comment "Sleep Constants"
+
+## ZZZ animation effects
+- See in the comment "ZZZ Animation Constants"
+
+## Pet size
+- See in the comment "Pet Constants" (Size of images affects performance)
+
+## Pet speed
+- See in the comment "Pet Constants"
+
+## Mood changing rate
+- See in the comment "Pet Constants"
+
+## Time needed for deep sleep
+- Change SLEEP.MATURE_TIME in ms
+
+## Cat styling
+- See in the comment "Pet Element Styles"
+
+## Trun on/off "ZZZ" animation when sleeping
+- Set ENABLE_ZZZ_ANIMATION to true/false
 
 ## Contributors
 <a href="https://github.com/SOMWHY/PageNeko/graphs/contributors">
@@ -66,4 +98,5 @@ That's it! Your page should now have a cute little playable living creature...
 </a>
 
 ## Stargazers over time
-[![Stargazers over time](https://starchart.cc/SOMWHY/PageNeko.svg?variant=adaptive)](https://starchart.cc/SOMWHY/PageNeko)
+`https://starchart.cc/SOMWHY/PageNeko.svg?variant=adaptive` ]( `https://starchart.cc/SOMWHY/PageNeko)`
+
