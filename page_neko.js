@@ -78,7 +78,7 @@ const SPRITE_CONFIG = {
   frameHeight: 42,
   columns: 34,
   rows: 1,
-  spritePath: "/images_neko/nekos.webp",
+  spritePath: "images_neko/nekos.webp",
 }
 
 const framePositions = {
